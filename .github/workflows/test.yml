@@ -1,0 +1,23 @@
+name: Test workflow
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on:
+      labels:
+        - self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Find matching workflow
+        id: last-build
+        uses: AFKBETO/last-successful-build-action@v4
+        with:
+          branch: main
+          workflow: Test workflow
+
+      - name: Print last successful build
+        run: |
+          echo "Last successful run id: ${{ steps.last-build.outputs.run-id }}"
+          echo "Last successful sha: ${{ steps.last-build.outputs.sha }}"
